@@ -1,34 +1,3 @@
-# Лайт-сборка Create React App
-
-Базовая сборка Create React App + React Router DOM + Modern Normalize +
-Prettier + Husky + ESLint + Classnames + ShortId + React Icons +
-React-Toastify + react-spinner-loader + Axios + deploy GitHub Pages
-
-## Для установки сборки:
-
-1. Копируем этот репозиторий себе.
-
-2. Открываем в VSCode и запускаем в консоли команду `npm ci` чтобы установить
-   загрузчики и плагины из перечня "package-lock.json".
-
-3. Меняем под себя значения ключа в файле "package-lock.json":
-   `"name": "react-default"` на `"name": "имя_вашего_проекта"` или просто
-   `"name": ""`
-
-4. Меняем под себя значения ключей в файле "package.json":
-   1. `"name": "react-default"` на `"name": "имя_вашего_проекта"` или просто
-      `"name": ""`;
-   2. В параметрах "repository" -
-      `"url": "git+https://github.com/Eduard-Konovka/react-default.git"` на
-      `"url": "git+https://github.com/ваше_имя_на_ГитХабе/имя_вашего_проекта.git"`;
-   3. В параметрах "bugs" -
-      `"url": "https://github.com/Eduard-Konovka/react-default.git/issues"` на
-      `"url": "https://github.com/ваше_имя_на_ГитХабе/имя_вашего_проекта.git/issues"`;
-   4. `"author": "Eduard Konovka <ed098ua@gmail.com>"` на
-      `"author": "Ваше_имя <ваш_e-mail>"` или просто `"author": ""`;
-   5. `"homepage": "https://Eduard-Konovka.github.io/react-default"` на
-      `"homepage": "https://ваше_имя_на_ГитХабе.github.io/имя_вашего_проекта"`.
-
 ## Команды скриптов в консоли bash:
 
 Вас интересуют первых два скрипта: `npm start` и `npm run deploy` :)
