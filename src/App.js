@@ -39,7 +39,6 @@ class App extends Component {
       imagesApi
         .fetchWithQuery(this.state.searchQuery, this.state.page)
         .then(response => {
-          console.log(response.length);
           if (response.length === 0) {
             this.setState({ status: 'rejected' });
             return;
