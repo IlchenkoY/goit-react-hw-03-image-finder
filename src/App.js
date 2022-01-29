@@ -1,17 +1,15 @@
 import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { toast } from 'react-toastify';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { LoaderSpinner } from './components/Loader/Loader';
 import { LoadMoreBtn } from 'components/Button/Button';
 import { Modal } from 'components/Modal/Modal';
+import { imagesApi } from 'fetchApi';
 import s from './App.module.css';
 
 class App extends Component {
   state = {
-    baseUrl: 'https://pixabay.com/api/',
-    key: '23677415-8b63517f25821789cc6d2523e',
     searchQuery: '',
     imgesData: [],
     page: 1,
@@ -29,7 +27,7 @@ class App extends Component {
       this.state.imgesData.length > 1 &&
       prevState.searchQuery !== this.state.searchQuery
     ) {
-      this.setState({ imgesData: [] });
+      this.setState({ imgesData: [], page: 1 });
     }
 
     if (
@@ -38,31 +36,29 @@ class App extends Component {
     ) {
       this.setState({ status: 'pending' });
 
-      fetch(
-        `${this.state.baseUrl}?q=${this.state.searchQuery}&page=${this.state.page}&key=${this.state.key}&image_type=photo&orientation=horizontal&per_page=12`,
-      )
+      imagesApi
+        .fetchWithQuery(this.state.searchQuery, this.state.page)
         .then(response => {
-          if (response.ok) {
-            return response.json();
+          console.log(response.length);
+          if (response.length === 0) {
+            this.setState({ status: 'rejected' });
+            return;
           }
-        })
-        .then(response => {
-          if (this.state.page > 1) {
-            this.setState(prevState => ({
-              imgesData: [...prevState.imgesData, ...response.hits],
-              status: 'resolved',
-            }));
-            window.scrollTo({
-              top: document.documentElement.scrollHeight,
-              behavior: 'smooth',
+          if (response.length < 12) {
+            this.setState({
+              imgesData: [...prevState.imgesData, ...response],
+              status: 'rejected',
             });
             return;
           }
-          if (response.total === 0) {
-            this.setState({ status: 'rejected' });
-            return toast.warn('🦄 Enter valid query!');
+          if (this.state.page > 1) {
+            this.setState(prevState => ({
+              imgesData: [...prevState.imgesData, ...response],
+              status: 'resolved',
+            }));
+            return;
           }
-          this.setState({ imgesData: response.hits, status: 'resolved' });
+          this.setState({ imgesData: response, status: 'resolved' });
         })
         .catch(error => {
           console.log(error);
@@ -95,7 +91,7 @@ class App extends Component {
               data={this.state.imgesData}
               onModalOpen={this.handleModalOpen}
             />
-            {status !== 'pending' && (
+            {status !== 'pending' && status !== 'rejected' && (
               <LoadMoreBtn onClick={this.handleLoadMoreBtnClick} />
             )}
           </>
